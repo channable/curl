@@ -484,17 +484,17 @@ unmarshallOption um c =
   CurlNewFilePerms x        -> u_long um (l 159) x
   CurlNewDirectoryPerms x   -> u_long um (l 160) x
   CurlPostRedirect x        -> u_bool um (l 161) x
-  CurlSSHHostPublicKeyMD5 x -> u_string um (l 162) x
+  CurlSSHHostPublicKeyMD5 x -> u_string um (o 162) x
   CurlCopyPostFields x      -> u_bool um (l 165) x
   CurlProxyTransferMode x   -> u_long um (l 166) x
-  CurlCRLFile x             -> u_string um (l 169) x
-  CurlIssuerCert x          -> u_string um (l 170) x
+  CurlCRLFile x             -> u_string um (o 169) x
+  CurlIssuerCert x          -> u_string um (o 170) x
   CurlAddressScope x        -> u_long um   (l 171) x
   CurlCertInfo x            -> u_long um   (l 172) x
-  CurlUserName x            -> u_string um (l 173) x
-  CurlUserPassword x        -> u_string um (l 174) x
-  CurlProxyUser x           -> u_string um (l 175) x
-  CurlProxyPassword x       -> u_string um (l 176) x
+  CurlUserName x            -> u_string um (o 173) x
+  CurlUserPassword x        -> u_string um (o 174) x
+  CurlProxyUser x           -> u_string um (o 175) x
+  CurlProxyPassword x       -> u_string um (o 176) x
 
 data Unmarshaller a
  = Unmarshaller
