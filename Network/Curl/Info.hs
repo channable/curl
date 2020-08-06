@@ -59,6 +59,7 @@ data Info
  | CookieList
  | LastSocket
  | FtpEntryPath
+ | PrimaryIp
    deriving (Show,Enum,Bounded)
 
 data InfoValue
@@ -130,6 +131,7 @@ getInfo h i = do
    CookieList -> getInfoSList h (show i) 28
    LastSocket -> getInfoLong h (show i) 29
    FtpEntryPath -> getInfoStr h (show i) 30
+   PrimaryIp -> getInfoStr h (show i) 32
 
 getInfoStr :: Curl -> String -> Long -> IO InfoValue
 getInfoStr h loc tg =
