@@ -141,6 +141,12 @@ setopt hh o = curlPrim hh $ \ r h -> unmarshallOption (easy_um r h) o
        = \ i x -> liftM toCode $ easy_setopt_ptr h i x
      , u_sockoptFun  -- :: Int -> Ptr () -> IO a
        = \ i x -> liftM toCode $ easy_setopt_ptr h i x
+     , u_sockOpenFun -- Int -> OpenSocketFunction -> IO a
+       = \ i x -> do
+         debug "ALLOC: OPEN_SOCK"
+         fp <- mkOpenSockFun x
+         updateCleanup r i $ debug "FREE: OPEN_SOCK" >> freeHaskellFunPtr fp
+         liftM toCode $ easy_setopt_fptr h i fp
      }
 
 perform :: Curl -> IO CurlCode
@@ -223,4 +229,5 @@ foreign import ccall "wrapper"
 foreign import ccall "wrapper"
    mkSslCtxtFun :: SSLCtxtFunction -> IO (FunPtr SSLCtxtFunction)
 
-
+foreign import ccall "wrapper"
+  mkOpenSockFun :: OpenSocketFunction -> IO (FunPtr OpenSocketFunction)
