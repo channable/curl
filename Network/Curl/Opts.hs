@@ -181,7 +181,8 @@ data CurlOption
  | CurlUserPassword  String
  | CurlProxyUser     String
  | CurlProxyPassword String
-  
+ | CurlOpenSocketFunction OpenSocketFunction
+ | CurlOpenSocketData (Ptr ())
 
 instance Show CurlOption where
   show x = showCurlOption x
@@ -265,14 +266,19 @@ type ReadFunction
  -> CInt       --  number of items
  -> Ptr ()     --  state argument (file pointer etc.)
  -> IO (Maybe CInt) --  how many bytes was copied into buffer; Nothing => abort.
- 
+
 type ReadFunctionPrim
   = Ptr CChar
  -> CInt
  -> CInt
  -> Ptr ()
  -> IO CInt
- 
+
+type OpenSocketFunction
+   = Ptr () -- ^ Pointer to clientp data set by OpenSocketData
+  -> CInt  -- ^ The curl socket type
+  -> Ptr () -- ^ The struct describing the curl_sockaddr struct
+  -> IO CInt -- ^ The opened socket or CURL_SOCKET_BAD
 
 type ProgressFunction
   = Ptr ()  --  state argument
@@ -495,6 +501,8 @@ unmarshallOption um c =
   CurlUserPassword x        -> u_string um (o 174) x
   CurlProxyUser x           -> u_string um (o 175) x
   CurlProxyPassword x       -> u_string um (o 176) x
+  CurlOpenSocketFunction x  -> u_sockOpenFun um (f 163) x
+  CurlOpenSocketData x      -> u_ptr um (o 164) x
 
 data Unmarshaller a
  = Unmarshaller
@@ -514,6 +522,7 @@ data Unmarshaller a
      , u_convToNetwork :: Int -> Ptr () -> IO a
      , u_convFromUtf8 :: Int -> Ptr () -> IO a
      , u_sockoptFun  :: Int -> Ptr () -> IO a
+     , u_sockOpenFun :: Int -> OpenSocketFunction -> IO a
      }
 
 verboseUnmarshaller :: Unmarshaller a -> Unmarshaller a
@@ -537,6 +546,7 @@ verboseUnmarshaller u =
     , u_convToNetwork    = twoS "u_convToNetwork" u_convToNetwork
     , u_convFromUtf8     = twoS "u_convFromUtf8" u_convFromUtf8
     , u_sockoptFun       = twoS "u_sockoptFun" u_sockoptFun
+    , u_sockOpenFun      = two "u_sockOpenFun" u_sockOpenFun
     }
 
 
@@ -706,3 +716,5 @@ showCurlOption o =
     CurlUserPassword  p -> "CurlUserPassword " ++ show p
     CurlProxyUser     p -> "CurlProxyUser " ++ show p
     CurlProxyPassword p -> "CurlProxyPassword " ++ show p
+    CurlOpenSocketFunction{} -> "CurlOpenSocketFunction <fun>"
+    CurlOpenSocketData p -> "CurlOpenSocketData " ++ show p
