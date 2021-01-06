@@ -102,6 +102,19 @@ data CurlCode
  | CurlAgain
  | CurlSSLCRLBadFile
  | CurlSSLIssuerError
+ | CurlFtpPretFailed
+ | CurlRtspCseqError
+ | CurlRtspSessionError
+ | CurlFtpBadFileList
+ | CurlChunkFailed
+ | CurlNoConnectionAvailable
+ | CurlSSLPinnedPubkeyNotMatch
+ | CurlSSLInvalidcertstatus
+ | CurlHttp2Stream
+ | CurlRecursiveApiCall
+ | CurlAuthError
+ | CurlHttp3
+ | CurlQuicConnectError
    deriving ( Eq, Show, Enum )
 
 toCode :: CInt -> CurlCode
