@@ -96,7 +96,7 @@ data CurlCode
  | CurlConvFailed
  | CurlConvReqd
  | CurlSSLCACertBadFile
- | CurlRemoveFileNotFound
+ | CurlRemoteFileNotFound
  | CurlSSH
  | CurlSSLShutdownFailed
  | CurlAgain
