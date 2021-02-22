@@ -1,4 +1,5 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE DoAndIfThenElse #-}
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl.Easy
@@ -49,7 +50,13 @@ import Data.Maybe
 initialize :: IO Curl
 initialize = do
   h <- easy_initialize
-  mkCurl h 
+  version <- curl_version_number
+  -- Require at least 7.17.0:
+  -- https://curl.se/libcurl/c/curl_easy_setopt.html
+  if version >= 0x071100 then
+    mkCurl h
+  else
+    fail "Curl version is lower than 7.17.0! Requires curl>=7.17.0"
 
 -- XXX: Is running cleanup here OK?
 reset :: Curl -> IO ()
