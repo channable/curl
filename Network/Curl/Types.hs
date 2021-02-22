@@ -26,6 +26,7 @@ import Network.Curl.Debug
 import Foreign.Ptr
 import Foreign.ForeignPtr
 import Foreign.Concurrent ( addForeignPtrFinalizer )
+import Data.ByteString(ByteString)
 import Data.Word
 import Control.Concurrent
 import Data.Maybe(fromMaybe)
@@ -36,7 +37,7 @@ import Data.IORef
 data Curl_
 type CurlH    = Ptr Curl_
 
-type URLString = String
+type URLString = ByteString
 type Port = Long
 type Long = Word32
 type LLong = Word64

@@ -36,6 +36,7 @@ import Network.Curl.Post
 
 import Network.Curl.Debug
 
+import Data.ByteString(useAsCString)
 import Data.IORef(IORef)
 import Foreign.Ptr
 import Foreign.Marshal.Alloc(free)
@@ -88,6 +89,14 @@ setopt hh o = curlPrim hh $ \ r h -> unmarshallOption (easy_um r h) o
               updateCleanup r i $
                 debug ("FREE: " ++ show x) >> curl_slist_free ip
               liftM toCode $ easy_setopt_string h i (castPtr ip)
+     , u_bytestring -- :: Int -> ByteString -> IO CurlCode
+        = \ i x ->
+           do debug ("USE: " ++ show x)
+              useAsCString x $ \c_x ->
+                -- Strings passed to libcurl as 'char *' arguments, are copied
+                -- by the library, so updateCleanup is not needed
+                liftM toCode $ easy_setopt_string h i c_x
+
      , u_ptr    -- :: Int -> Ptr ()   -> IO a
        = \ i x -> liftM toCode $ easy_setopt_ptr h i x
      , u_writeFun -- :: Int -> WriteFunction -> IO a

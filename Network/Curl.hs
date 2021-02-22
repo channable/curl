@@ -1,5 +1,6 @@
 {-# LANGUAGE TypeSynonymInstances   #-}
 {-# LANGUAGE FlexibleInstances      #-}
+{-# LANGUAGE OverloadedStrings      #-}
 {-# OPTIONS_GHC -fno-warn-unused-do-bind #-}
 --------------------------------------------------------------------
 -- |
@@ -96,12 +97,10 @@ import Network.Curl.Easy
 
 import Foreign.C.String
 import Data.IORef
-import Data.List(isPrefixOf)
--- import System.IO
 import Control.Exception ( finally )
 
 import Data.ByteString ( ByteString, packCStringLen )
-import qualified Data.ByteString as BS ( concat )
+import qualified Data.ByteString as BS ( concat, isPrefixOf )
 
 import qualified Data.ByteString.Lazy as LazyBS ( ByteString, fromChunks )
 
@@ -188,7 +187,7 @@ curlGet url opts = initialize >>= \ h -> do
 
 setDefaultSSLOpts :: Curl -> URLString -> IO ()
 setDefaultSSLOpts h url
- | "https:" `isPrefixOf` url = do
+ | "https:" `BS.isPrefixOf` url = do
     -- the default options are pretty dire, really -- turning off
     -- the peer verification checks!
    mapM_ (setopt h)

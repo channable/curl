@@ -20,6 +20,7 @@ import Data.List
 import Foreign.Ptr
 import Foreign.C.Types
 import Data.Bits
+import Data.ByteString(ByteString)
 
 data CurlOption
  = CurlFileObj (Ptr ())  -- ^ external pointer to pass to as 'WriteFunction's last argument.
@@ -347,7 +348,7 @@ unmarshallOption um c =
  in
  case c of
   CurlFileObj x -> u_ptr um (o 1) x
-  CurlURL x   -> u_string um (o 2) x
+  CurlURL x   -> u_bytestring um (o 2) x
   CurlPort x  -> u_long   um (l 3) x
   CurlProxy x -> u_string um (o 4) x
   CurlUserPwd x -> u_string um (o 5) x
@@ -510,6 +511,7 @@ data Unmarshaller a
      , u_llong   :: Int -> LLong    -> IO a
      , u_string  :: Int -> String   -> IO a
      , u_strings :: Int -> [String] -> IO a
+     , u_bytestring :: Int -> ByteString -> IO a
      , u_ptr     :: Int -> Ptr ()   -> IO a
      , u_writeFun :: Int -> WriteFunction -> IO a
      , u_readFun :: Int -> ReadFunction -> IO a
@@ -534,6 +536,7 @@ verboseUnmarshaller u =
     , u_llong       = twoS "u_llong" u_llong
     , u_string      = twoS "u_string" u_string 
     , u_strings     = twoS "u_strings" u_strings
+    , u_bytestring  = twoS "u_bytestring" u_bytestring
     , u_ptr         = twoS "u_ptr" u_ptr
     , u_writeFun    = two "u_writeFun" u_writeFun
     , u_readFun     = two "u_readFun" u_readFun
