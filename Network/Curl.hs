@@ -454,4 +454,3 @@ getResponseCode c = do
      IDouble d -> return (round d)
      ILong x   -> return (fromIntegral x)
      IList{}   -> fail ("Curl.getResponseCode: unexpected response code " ++ show iv)
-

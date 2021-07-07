@@ -17,7 +17,7 @@
 --------------------------------------------------------------------
 module Network.Curl.Types
   ( CurlH, URLString, Port, Long, LLong, Slist_ 
-  , Curl, curlPrim, mkCurl, mkCurlWithCleanup
+  , Curl (..), curlPrim, mkCurl, mkCurlWithCleanup
   , OptionMap, shareCleanup, runCleanup, updateCleanup
   ) where
 
@@ -153,4 +153,3 @@ foreign import ccall "wrapper"
 
 foreign import ccall 
   "curl/curl.h curl_easy_cleanup" easy_cleanup :: CurlH -> IO ()
-

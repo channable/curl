@@ -112,6 +112,12 @@ setopt hh o = curlPrim hh $ \ r h -> unmarshallOption (easy_um r h) o
             fp <- mkWriter x
             updateCleanup r i $ debug "FREE: WRITER" >> freeHaskellFunPtr fp
             liftM toCode $ easy_setopt_wfun h i fp
+     , u_writeFunH -- :: Int -> WriteFunction -> IO a
+       = \ i x -> do
+            debug "ALLOC: HEADER WRITER"
+            fp <- mkWriter x
+            updateCleanup r i $ debug "FREE: HEADER WRITER" >> freeHaskellFunPtr fp
+            liftM toCode $ easy_setopt_wfun h i fp
      , u_readFun -- :: Int -> ReadFunction -> IO a
        = \ i x -> do
             let wrapResult f a b c d = do
@@ -162,6 +168,12 @@ setopt hh o = curlPrim hh $ \ r h -> unmarshallOption (easy_um r h) o
          debug "ALLOC: OPEN_SOCK"
          fp <- mkOpenSockFun x
          updateCleanup r i $ debug "FREE: OPEN_SOCK" >> freeHaskellFunPtr fp
+         liftM toCode $ easy_setopt_fptr h i fp
+     , u_sockCloseFun -- Int -> CloseSocketFunction -> IO a
+       = \ i x -> do
+         debug "ALLOC: CLOSE_SOCK"
+         fp <- mkCloseSockFun x
+         updateCleanup r i $ debug "FREE: CLOSE_SOCK" >> freeHaskellFunPtr fp
          liftM toCode $ easy_setopt_fptr h i fp
      }
 
@@ -247,3 +259,6 @@ foreign import ccall "wrapper"
 
 foreign import ccall "wrapper"
   mkOpenSockFun :: OpenSocketFunction -> IO (FunPtr OpenSocketFunction)
+
+foreign import ccall "wrapper"
+  mkCloseSockFun :: CloseSocketFunction -> IO (FunPtr CloseSocketFunction)

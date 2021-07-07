@@ -183,6 +183,7 @@ data CurlOption
  | CurlProxyUser     String
  | CurlProxyPassword String
  | CurlOpenSocketFunction OpenSocketFunction
+ | CurlCloseSocketFunction CloseSocketFunction
  | CurlOpenSocketData (Ptr ())
 
 instance Show CurlOption where
@@ -280,6 +281,11 @@ type OpenSocketFunction
   -> CInt  -- ^ The curl socket type
   -> Ptr () -- ^ The struct describing the curl_sockaddr struct
   -> IO CInt -- ^ The opened socket or CURL_SOCKET_BAD
+
+type CloseSocketFunction
+   = Ptr ()  -- ^ Pointer to clientp data set by OpenSocketData
+  -> CInt    -- ^ The curl socket type
+  -> IO CInt -- ^ Whether closing was successful
 
 type ProgressFunction
   = Ptr ()  --  state argument
@@ -417,7 +423,7 @@ unmarshallOption um c =
   CurlRandomFile x -> u_string um (o 76) x
   CurlEgdSocket x -> u_string um (o 77) x
   CurlConnectTimeout x -> u_long um (l 78) x
-  CurlHeaderFunction x -> u_writeFun um (f 79) x
+  CurlHeaderFunction x -> u_writeFunH um (f 79) x
   CurlHttpGet x        -> u_bool um (l 80) x
   CurlSSLVerifyHost x  -> u_long um (l 81) x
   CurlCookieJar x -> u_string um (o 82) x
@@ -504,6 +510,7 @@ unmarshallOption um c =
   CurlProxyPassword x       -> u_string um (o 176) x
   CurlOpenSocketFunction x  -> u_sockOpenFun um (f 163) x
   CurlOpenSocketData x      -> u_ptr um (o 164) x
+  CurlCloseSocketFunction x -> u_sockCloseFun um (f 208) x
 
 data Unmarshaller a
  = Unmarshaller
@@ -514,6 +521,7 @@ data Unmarshaller a
      , u_bytestring :: Int -> ByteString -> IO a
      , u_ptr     :: Int -> Ptr ()   -> IO a
      , u_writeFun :: Int -> WriteFunction -> IO a
+     , u_writeFunH :: Int -> WriteFunction -> IO a
      , u_readFun :: Int -> ReadFunction -> IO a
      , u_progressFun :: Int -> ProgressFunction -> IO a
      , u_debugFun :: Int -> DebugFunction -> IO a
@@ -525,6 +533,7 @@ data Unmarshaller a
      , u_convFromUtf8 :: Int -> Ptr () -> IO a
      , u_sockoptFun  :: Int -> Ptr () -> IO a
      , u_sockOpenFun :: Int -> OpenSocketFunction -> IO a
+     , u_sockCloseFun :: Int -> CloseSocketFunction -> IO a
      }
 
 verboseUnmarshaller :: Unmarshaller a -> Unmarshaller a
@@ -539,6 +548,7 @@ verboseUnmarshaller u =
     , u_bytestring  = twoS "u_bytestring" u_bytestring
     , u_ptr         = twoS "u_ptr" u_ptr
     , u_writeFun    = two "u_writeFun" u_writeFun
+    , u_writeFunH   = two "u_writeFun" u_writeFun
     , u_readFun     = two "u_readFun" u_readFun
     , u_progressFun = two "u_progressFun" u_progressFun
     , u_debugFun    = two "u_debugFun" u_debugFun
@@ -550,6 +560,7 @@ verboseUnmarshaller u =
     , u_convFromUtf8     = twoS "u_convFromUtf8" u_convFromUtf8
     , u_sockoptFun       = twoS "u_sockoptFun" u_sockoptFun
     , u_sockOpenFun      = two "u_sockOpenFun" u_sockOpenFun
+    , u_sockCloseFun     = two "u_sockCloseFun" u_sockCloseFun
     }
 
 
@@ -721,3 +732,4 @@ showCurlOption o =
     CurlProxyPassword p -> "CurlProxyPassword " ++ show p
     CurlOpenSocketFunction{} -> "CurlOpenSocketFunction <fun>"
     CurlOpenSocketData p -> "CurlOpenSocketData " ++ show p
+    CurlCloseSocketFunction{} -> "CurlCloseSocketFunction <fun>"
