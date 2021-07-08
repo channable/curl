@@ -285,7 +285,7 @@ type OpenSocketFunction
 type CloseSocketFunction
    = Ptr ()  -- ^ Pointer to clientp data set by OpenSocketData
   -> CInt    -- ^ The curl socket type
-  -> IO CInt -- ^ Whether closing was successful
+  -> IO CInt -- ^ Whether closing was successful, 0 if so, 1 if not
 
 type ProgressFunction
   = Ptr ()  --  state argument
@@ -548,7 +548,7 @@ verboseUnmarshaller u =
     , u_bytestring  = twoS "u_bytestring" u_bytestring
     , u_ptr         = twoS "u_ptr" u_ptr
     , u_writeFun    = two "u_writeFun" u_writeFun
-    , u_writeFunH   = two "u_writeFunH" u_writeFun
+    , u_writeFunH   = two "u_writeFunH" u_writeFunH
     , u_readFun     = two "u_readFun" u_readFun
     , u_progressFun = two "u_progressFun" u_progressFun
     , u_debugFun    = two "u_debugFun" u_debugFun
