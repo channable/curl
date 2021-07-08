@@ -21,4 +21,3 @@ debug :: String -> IO ()
 debug msg
   | debugging     = putStrLn ("DEBUG: " ++ msg) >> hFlush stdout
   | otherwise     = return ()
-
