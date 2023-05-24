@@ -193,20 +193,20 @@ data HttpVersion
  = HttpVersionNone
  | HttpVersion10
  | HttpVersion11
-   deriving ( Enum,Show )
+   deriving ( Enum, Show, Eq )
 
 data TimeCond
  = TimeCondNone
  | TimeCondIfModSince
  | TimeCondIfUnmodSince
  | TimeCondLastMode
-   deriving ( Enum, Show )
+   deriving ( Enum, Show, Eq )
  
 data NetRcOption
  = NetRcIgnored
  | NetRcOptional
  | NetRcRequired
-   deriving ( Enum, Show )
+   deriving ( Enum, Show, Eq )
 
 data HttpAuth
  = HttpAuthNone
@@ -216,7 +216,7 @@ data HttpAuth
  | HttpAuthNTLM
  | HttpAuthAny
  | HttpAuthAnySafe
-   deriving ( Enum, Show )
+   deriving ( Enum, Show, Eq )
 
 toHttpAuthMask :: [HttpAuth] -> Long
 toHttpAuthMask [] = 0
@@ -239,7 +239,7 @@ data SSHAuthType
  | SSHAuthPassword
  | SSHAuthHost
  | SSHAuthKeyboard
-   deriving ( Show )
+   deriving ( Show, Enum, Eq )
 
 
 toSSHAuthMask :: [SSHAuthType] -> Long
