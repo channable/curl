@@ -1,5 +1,5 @@
-{ mkDerivation, base, bytestring, containers, curlFull, lib, stdenv, hpack }:
-assert lib.versionAtLeast curlFull.version "7.17.0";
+{ mkDerivation, base, bytestring, containers, curlFull, lib, stdenv }:
+assert lib.versionAtLeast curlFull.version "7.84.0";
 mkDerivation {
   pname = "curl";
   version = "1.3.8";
