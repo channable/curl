@@ -20,6 +20,7 @@ import Data.List
 import Foreign.Ptr
 import Foreign.C.Types
 import Data.Bits
+import Data.Int (Int32, Int64)
 import Data.ByteString(ByteString)
 
 data CurlOption
@@ -128,10 +129,10 @@ data CurlOption
  | CurlProxyAuth [HttpAuth]        -- ^ What preferred authentication schemes to use wrt. proxy.
  | CurlFtpResponseTimeout Long     -- ^ max number of seconds to wait for remote server to ACK commands.
  | CurlIPResolve Long              -- ^ Whether to resolve wrt IPv4 or IPv6.
- | CurlMaxFileSize Long            -- ^ Limit the number of bytes you're willing to download.
+ | CurlMaxFileSize Int32           -- ^ Limit the number of bytes you're willing to download.
  | CurlInFileSizeLarge LLong       -- ^ Wider alternative of option giving upper bound of uploaded content (-1 => unknown.)
  | CurlResumeFromLarge LLong       -- ^ Wider alternative for specifying initial transfer offset.
- | CurlMaxFileSizeLarge LLong      -- ^ Wider alternative for specifying max download size.
+ | CurlMaxFileSizeLarge Int64      -- ^ Wider alternative for specifying max download size.
  | CurlNetrcFile FilePath          -- ^ Path to user\'s .netrc
  | CurlFtpSSL Long                 -- ^ Try enabling the use of SSL for FTP control connections and\/or transfers.
  | CurlPostFieldSizeLarge LLong    -- ^ Size of data to POST; if unspecified (or -1), curl uses strlen().
