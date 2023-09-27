@@ -153,7 +153,6 @@ data CurlCode
  | CurlProxyCode
  | CurlSslClientCert
  | CurlUnrecoverablePoll
- | CurlObsolete
    deriving ( Eq, Show, Enum )
 
 toCode :: CInt -> CurlCode
