@@ -1,4 +1,5 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE PatternSynonyms #-}
 --------------------------------------------------------------------
 -- |
 -- Module    : Network.Curl.Code
@@ -16,6 +17,40 @@
 module Network.Curl.Code where
 
 import Foreign.C.Types
+
+-- Pattern synonyms to map the very old error codes to their new names. Old
+-- constructors are kept for backwards compatibility.
+pattern CurlNotBuiltIn = CurlUrlMalformatUser
+pattern CurlWeirdServerReply = CurlFtpWeirdServerReply
+pattern CurlRemoteAccessDenied = CurlFtpAccessDenied
+pattern CurlFtpAcceptFailed = CurlFtpUserPasswordIncorrect
+pattern CurlFtpAcceptTimeout = CurlFtpWeirdUserReply
+pattern CurlHttp2 = CurlFtpCantReconnect
+pattern CurlFtpCouldnSetType = CurlFtpCouldnSetBinary
+pattern CurlObsoleteError20 = CurlFtpWriteError
+pattern CurlQuoteError = CurlFtpQuoteError
+pattern CurlObsoleteError24 = CurlMalformatError
+pattern CurlUploadFailed = CurlFtpCouldnStorFile
+pattern CurlObsoleteError29 = CurlFtpCouldntSetAscii
+pattern CurlObsoleteError32 = CurlFtpCouldntGetSize
+pattern CurlRangeError = CurlHttpRangeError
+pattern CurlObsoleteError40 = CurlLibraryNotFound
+pattern CurlObsoleteError44 = CurlBadCallingOrder
+pattern CurlObsoleteError46 = CurlBadPasswordEntered
+pattern CurlUnknownOption = CurlUnknownTelnetOption
+pattern CurlSetOptOptionSyntax = CurlTelnetOptionSyntax
+pattern CurlObsoleteError50 = CurlObsolete
+pattern CurlObsoleteError51 = CurlSSLPeerCertificate
+pattern CurlObsoleteError57 = CurlShareInUse
+pattern CurlSslCipher = CurlSSLCipher
+pattern CurlPeerFailedVerification = CurlSSLCACert
+pattern CurlObsoleteError62 = CurlLDAPInvalidUrl
+pattern CurlUseSslFailed = CurlFtpSSLFailed
+pattern CurlSslEngineInitFailed = CurlSSLEngineInitFailed
+pattern CurlRemoteDiskFull = CurlTFtpDiskFull
+pattern CurlRemoteFileExists = CurlTFtpExists
+pattern CurlObsoleteError75 = CurlConvFailed
+pattern CurlObsoleteError76 = CurlConvReqd
 
 data CurlCode
  = CurlOK
@@ -115,6 +150,10 @@ data CurlCode
  | CurlAuthError
  | CurlHttp3
  | CurlQuicConnectError
+ | CurlProxyCode
+ | CurlSslClientCert
+ | CurlUnrecoverablePoll
+ | CurlObsolete
    deriving ( Eq, Show, Enum )
 
 toCode :: CInt -> CurlCode

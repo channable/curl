@@ -49,4 +49,3 @@ library
 source-repository head
   type:     git
   location: git://github.com/galoisinc/curl.git
-
