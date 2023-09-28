@@ -153,7 +153,7 @@ data CurlCode
  | CurlProxyCode
  | CurlSslClientCert
  | CurlUnrecoverablePoll
-   deriving ( Eq, Show, Enum )
+   deriving ( Eq, Show, Enum, Bounded )
 
 toCode :: CInt -> CurlCode
 toCode x = toEnum (fromIntegral x)
