@@ -14,7 +14,44 @@
 --
 --------------------------------------------------------------------
 
-module Network.Curl.Code where
+module Network.Curl.Code
+  ( CurlCode(
+      ..,
+      -- Pattern synonyms
+      CurlNotBuiltIn,
+      CurlWeirdServerReply,
+      CurlRemoteAccessDenied,
+      CurlFtpAcceptFailed,
+      CurlFtpAcceptTimeout,
+      CurlHttp2,
+      CurlFtpCouldnSetType,
+      CurlObsoleteError20,
+      CurlQuoteError,
+      CurlObsoleteError24,
+      CurlUploadFailed,
+      CurlObsoleteError29,
+      CurlObsoleteError32,
+      CurlRangeError,
+      CurlObsoleteError40,
+      CurlObsoleteError44,
+      CurlObsoleteError46,
+      CurlUnknownOption,
+      CurlSetOptOptionSyntax,
+      CurlObsoleteError50,
+      CurlObsoleteError51,
+      CurlObsoleteError57,
+      CurlSslCipher,
+      CurlPeerFailedVerification,
+      CurlObsoleteError62,
+      CurlUseSslFailed,
+      CurlSslEngineInitFailed,
+      CurlRemoteDiskFull,
+      CurlRemoteFileExists,
+      CurlObsoleteError75,
+      CurlObsoleteError76
+    )
+  , toCode
+  ) where
 
 import Foreign.C.Types
 
