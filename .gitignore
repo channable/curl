@@ -6,4 +6,5 @@ config.status
 curl.buildinfo
 *.o
 *.hi
-
+dist-newstyle
+.direnv
