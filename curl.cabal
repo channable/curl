@@ -32,6 +32,7 @@ library
                    Network.Curl.Types
                    Network.Curl.Easy
                    Network.Curl.Debug
+                   Network.Curl.Url
 
   c-sources:        curlc.c
   Extra-libraries:  curl
@@ -44,7 +45,7 @@ library
   else
     Build-depends: base < 3
 
-  build-depends: bytestring >= 0.9
+  build-depends: bytestring >= 0.9, text
 
 source-repository head
   type:     git
