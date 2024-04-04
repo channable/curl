@@ -97,6 +97,8 @@ foreign import ccall unsafe
 pattern CURLUE_OK :: CInt
 pattern CURLUE_OK = 0
 
+-- Reference: https://github.com/curl/curl/blob/cfc65fd1ee164113e4b342f2e57e36fdc07c87fd/include/curl/urlapi.h#L84-L101
+
 pattern CURLU_DEFAULT_PORT,
         CURLU_NO_DEFAULT_PORT,
         CURLU_DEFAULT_SCHEME,
