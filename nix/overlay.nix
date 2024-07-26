@@ -4,9 +4,9 @@ final: previous:
     haskellOverlay = final.callPackage ./haskell-overlay.nix {};
 
     haskellPackages =
-      previous.haskell.packages.ghc94.extend final.curl_channable.haskellOverlay;
+      previous.haskell.packages.ghc96.extend final.curl_channable.haskellOverlay;
 
     staticHaskellPackages =
-      previous.pkgsStatic.haskell.packages.ghc94.extend final.curl_channable.haskellOverlay;
+      previous.pkgsStatic.haskell.packages.ghc96.extend final.curl_channable.haskellOverlay;
   };
 }
