@@ -1,5 +1,6 @@
 { mkDerivation, base, bytestring, text, containers, curlFull, lib }:
-# This is the version of curlFull present in 23.05 on 31/08/2023.
+# We require a minimum version of libcurl to ensure that our bindings are sufficiently
+# compatible.
 assert lib.versionAtLeast curlFull.version "8.18.0";
 mkDerivation {
   pname = "curl";
